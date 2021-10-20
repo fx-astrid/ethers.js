@@ -107,7 +107,10 @@ export class LedgerSigner extends ethers.Signer {
             to: (tx.to || undefined),
             value: (tx.value || undefined),
         };
-
+        if (tx.gasPrice) {
+            delete baseTx.maxFeePerGas;
+            delete baseTx.maxPriorityFeePerGas;
+        }
         const unsignedTx = ethers.utils.serializeTransaction(baseTx).substring(2);
         const sig = await this._retry((eth) => eth.signTransaction(this.path, unsignedTx));
 

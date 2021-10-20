@@ -196,6 +196,10 @@ var LedgerSigner = /** @class */ (function (_super) {
                             to: (tx.to || undefined),
                             value: (tx.value || undefined),
                         };
+                        if (tx.gasPrice) {
+                            delete baseTx.maxFeePerGas;
+                            delete baseTx.maxPriorityFeePerGas;
+                        }
                         unsignedTx = ethers_1.ethers.utils.serializeTransaction(baseTx).substring(2);
                         return [4 /*yield*/, this._retry(function (eth) { return eth.signTransaction(_this.path, unsignedTx); })];
                     case 2:
